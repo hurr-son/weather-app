@@ -1,4 +1,6 @@
-const MY_API_KEY = 'HX59HUJYEUNCGSB8MNPQMSKSN'
+import config from './config.js';
+
+const MY_API_KEY = config.apiKey;
 
 function createWeatherURL(location) {
     const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
