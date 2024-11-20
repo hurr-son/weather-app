@@ -7,28 +7,46 @@ function createWeatherURL(location) {
     return `${baseURL}${location}?key=${MY_API_KEY}`;
 }
 
+
 function processWeatherData(data) {
     return {
         location: data.resolvedAddress,
-        description: data.description,
-        currentTemp: data.days[0].temp,
-        conditions: data.days[0].conditions,
-        highTemp: data.days[0].tempmax,
-        lowTemp: data.days[0].tempmin,
-        precipitationProbability: data.days[0].precipprob,
+        forecast: data.days.slice(0, 10).map((day) => ({
+            date: day.datetime,
+            description: day.conditions,
+            highTemp: day.tempmax,
+            lowTemp: day.tempmin,
+            precipitationProbability: day.precipprob,
+        })),
     };
 }
 
 function displayWeather(weather) {
     const weatherInfo = document.getElementById('weatherInfo');
     weatherInfo.innerHTML = `
-        <h2>Weather in ${weather.location}</h2>
-        <p><strong>Description:</strong> ${weather.description}</p>
-        <p><strong>Current Temperature:</strong> ${weather.currentTemp}°F</p>
-        <p><strong>Conditions:</strong> ${weather.conditions}</p>
-        <p><strong>High:</strong> ${weather.highTemp}°F, <strong>Low:</strong> ${weather.lowTemp}°F</p>
-        <p><strong>Precipitation Probability:</strong> ${weather.precipitationProbability}%</p>
+        <h2>10-Day Weather Forecast for ${weather.location}</h2>
     `;
+
+  
+    const cardsContainer = document.createElement('div');
+    cardsContainer.classList.add('cards');
+
+    weather.forecast.forEach((day) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        card.innerHTML = `
+            <h3>${day.date}</h3>
+            <p><strong>${day.description}</strong></p>
+            <p>High: ${day.highTemp}°F</p>
+            <p>Low: ${day.lowTemp}°F</p>
+            <p>Precipitation: ${day.precipitationProbability || 0}%</p>
+        `;
+
+        cardsContainer.appendChild(card);
+    });
+
+    weatherInfo.appendChild(cardsContainer);
 }
 
 async function fetchWeather(location) {
@@ -53,7 +71,6 @@ async function fetchWeather(location) {
         loading.style.display = 'none';
     }
 }
-
 
 document.getElementById('locationForm').addEventListener('submit', (event) => {
     event.preventDefault();
