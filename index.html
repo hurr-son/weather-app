@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <title>Weather App</title>
-    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <h1>Weather App</h1>
+    <form id="locationForm">
+        <input type="text" id="locationInput" placeholder="Enter location (e.g., Milwaukee, WI)" required>
+        <button type="submit">Get Weather</button>
+    </form>
+    <div id="loading">Loading...</div>
+    <div id="weatherInfo"></div>
+    <div class="error" id="error"></div>
+    <script src="script.js"></script>
 </body>
 </html>
