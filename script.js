@@ -10,7 +10,7 @@ function createWeatherURL(location) {
 function processWeatherData(data) {
     return {
         location: data.resolvedAddress,
-        forecast: data.days.slice(0, 10).map((day) => ({
+        forecast: data.days.slice(0, 7).map((day) => ({
             date: day.datetime,
             description: day.conditions,
             highTemp: day.tempmax,
@@ -24,7 +24,7 @@ function processWeatherData(data) {
 async function displayWeather(weather) {
     const weatherInfo = document.getElementById('weatherInfo');
     weatherInfo.innerHTML = `
-        <h2>10-Day Weather Forecast for ${weather.location}</h2>
+        <h2>7-Day Forecast for ${weather.location}</h2>
     `;
 
     const cardsContainer = document.createElement('div');
