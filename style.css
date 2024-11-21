@@ -83,3 +83,8 @@ button:hover {
     flex-wrap: wrap;
     gap: 15px;
 }
+
+.icon-container svg {
+    width: 75px;
+    height: 75px;
+}

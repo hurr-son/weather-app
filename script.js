@@ -7,7 +7,6 @@ function createWeatherURL(location) {
     return `${baseURL}${location}?key=${MY_API_KEY}`;
 }
 
-
 function processWeatherData(data) {
     return {
         location: data.resolvedAddress,
@@ -17,23 +16,39 @@ function processWeatherData(data) {
             highTemp: day.tempmax,
             lowTemp: day.tempmin,
             precipitationProbability: day.precipprob,
+            icon: day.icon
         })),
     };
 }
 
-function displayWeather(weather) {
+async function displayWeather(weather) {
     const weatherInfo = document.getElementById('weatherInfo');
     weatherInfo.innerHTML = `
         <h2>10-Day Weather Forecast for ${weather.location}</h2>
     `;
 
-  
     const cardsContainer = document.createElement('div');
     cardsContainer.classList.add('cards');
 
-    weather.forecast.forEach((day) => {
+    for (const day of weather.forecast) {
         const card = document.createElement('div');
         card.classList.add('card');
+
+        const iconDiv = document.createElement('div');
+        iconDiv.classList.add('icon-container');
+
+        try {
+          
+            const response = await fetch(`weather-icons/${day.icon}.svg`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch SVG: ${response.status}`);
+            }
+            const svgData = await response.text();
+            iconDiv.innerHTML = svgData;
+        } catch (error) {
+            console.error(`Error fetching SVG for ${day.icon}:`, error);
+            iconDiv.innerHTML = `<p>Icon unavailable</p>`; 
+        }
 
         card.innerHTML = `
             <h3>${day.date}</h3>
@@ -43,8 +58,10 @@ function displayWeather(weather) {
             <p>Precipitation: ${day.precipitationProbability || 0}%</p>
         `;
 
+        card.prepend(iconDiv);
+
         cardsContainer.appendChild(card);
-    });
+    }
 
     weatherInfo.appendChild(cardsContainer);
 }
