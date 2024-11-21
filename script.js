@@ -14,6 +14,7 @@ function processWeatherData(data) {
         forecast: data.days.slice(0, 10).map((day) => ({
             date: day.datetime,
             description: day.conditions,
+            icon: day.icon,
             highTemp: day.tempmax,
             lowTemp: day.tempmin,
             precipitationProbability: day.precipprob,
@@ -34,9 +35,10 @@ function displayWeather(weather) {
     weather.forecast.forEach((day) => {
         const card = document.createElement('div');
         card.classList.add('card');
-
+        const iconPath
         card.innerHTML = `
             <h3>${day.date}</h3>
+
             <p><strong>${day.description}</strong></p>
             <p>High: ${day.highTemp}°F</p>
             <p>Low: ${day.lowTemp}°F</p>
@@ -64,6 +66,7 @@ async function fetchWeather(location) {
         const weatherData = await response.json();
         const weather = processWeatherData(weatherData);
         displayWeather(weather);
+        console.log(weather)
     } catch (error) {
         errorDiv.textContent = `Failed to fetch weather data: ${error.message}`;
         console.error(error);
