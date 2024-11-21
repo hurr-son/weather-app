@@ -24,7 +24,7 @@ function processWeatherData(data) {
 async function displayWeather(weather) {
     const weatherInfo = document.getElementById('weatherInfo');
     weatherInfo.innerHTML = `
-        <h2>7-Day Forecast for ${weather.location}</h2>
+        <h2>10-Day Weather Forecast for ${weather.location}</h2>
     `;
 
     const cardsContainer = document.createElement('div');
@@ -38,13 +38,14 @@ async function displayWeather(weather) {
         iconDiv.classList.add('icon-container');
 
         try {
-          
-            const response = await fetch(`weather-icons/${day.icon}.svg`);
+            const iconUrl = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/2nd%20Set%20-%20Color/${day.icon}.svg`;
+            
+            const response = await fetch(iconUrl);
             if (!response.ok) {
                 throw new Error(`Failed to fetch SVG: ${response.status}`);
             }
             const svgData = await response.text();
-            iconDiv.innerHTML = svgData;
+            iconDiv.innerHTML = svgData; 
         } catch (error) {
             console.error(`Error fetching SVG for ${day.icon}:`, error);
             iconDiv.innerHTML = `<p>Icon unavailable</p>`; 
@@ -65,6 +66,7 @@ async function displayWeather(weather) {
 
     weatherInfo.appendChild(cardsContainer);
 }
+
 
 async function fetchWeather(location) {
     const url = createWeatherURL(location);
