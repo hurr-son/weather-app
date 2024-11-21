@@ -9,7 +9,14 @@
 <body>
     <h1>Weather App</h1>
     <form id="locationForm">
-        <input type="text" id="locationInput" placeholder="Enter location (e.g., Milwaukee, WI)" required>
+        <input 
+            type="text" 
+            id="locationInput" 
+            placeholder="Enter location (e.g., Milwaukee, WI)" 
+            required 
+            pattern="^(\d{5}(-\d{4})?|[a-zA-Z\s,]+|(-?\d{1,2}\.\d+,-?\d{1,3}\.\d+))$"
+            title="Enter a valid location: US ZIP code, address, or latitude/longitude (e.g., 53202, Milwaukee, WI, or 40.7128,-74.0060)."
+        >
         <button type="submit">Get Weather</button>
     </form>
     <div id="loading">Loading...</div>
