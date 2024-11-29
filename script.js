@@ -100,3 +100,6 @@ document.getElementById('locationForm').addEventListener('submit', (event) => {
         alert('Please enter a valid location.');
     }
 });
+
+// Placeholder forecast
+fetchWeather("Milwaukee")
